@@ -1,0 +1,30 @@
+{
+  "name": "automation-testing-project",
+  "version": "1.0.0",
+  "description": "Labs and exam project for automation testing using TypeScript, Playwright, Vitest, and Allure",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "run:lab": "ts-node labs/lab$LAB/index.ts",
+    "test:lab": "playwright test labs/lab$LAB",
+    "test:project": "playwright test pet-project/e2e",
+    "allure:generate": "allure generate ./allure-results --clean -o ./allure-report",
+    "allure:open": "allure open ./allure-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.43.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.3",
+    "vitest": "^3.1.1"
+  },
+  "dependencies": {
+    "allure-commandline": "^2.24.1",
+    "axios": "^1.6.0",
+    "better-sqlite3": "^11.9.1",
+    "drizzle-orm": "^0.41.0",
+    "xmlbuilder2": "^3.1.1"
+  }
+}

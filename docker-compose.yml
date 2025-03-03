@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  tests:
+    build: .
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./allure-results:/app/allure-results
+    environment:
+      - CI=true
+
+  allure:
+    image: frankescobar/allure-docker-service
+    ports:
+      - '5050:5050'
+    volumes:
+      - ./allure-results:/app/allure-results
+      - ./allure-report:/app/allure-report
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: 3
+      KEEP_HISTORY: 1
