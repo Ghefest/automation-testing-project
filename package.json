@@ -8,14 +8,18 @@
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "run:lab": "ts-node labs/lab$LAB/index.ts",
-    "test:lab": "playwright test labs/lab$LAB",
+    "e2e:lab": "playwright test labs/lab${LAB}/",
+    "unit:lab": "vitest run labs/lab$LAB/",
+    "jmeter:lab19": "jmeter -n -t labs/lab19/scenario.jmx -p labs/lab19/users.properties -l labs/lab19/results/results.jtl -e -o labs/lab19/results/report",
     "test:project": "playwright test pet-project/e2e",
     "allure:generate": "allure generate ./allure-results --clean -o ./allure-report",
-    "allure:open": "allure open ./allure-report"
+    "allure:open": "allure open ./allure-report",
+    "run:lab19": "bash ./run-lab19.sh"
   },
   "devDependencies": {
     "@playwright/test": "^1.43.1",
     "@types/better-sqlite3": "^7.6.13",
+    "allure-playwright": "^3.2.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.3",
     "vitest": "^3.1.1"
@@ -24,6 +28,7 @@
     "allure-commandline": "^2.24.1",
     "axios": "^1.6.0",
     "better-sqlite3": "^11.9.1",
+    "dotenv": "^16.5.0",
     "drizzle-orm": "^0.41.0",
     "xmlbuilder2": "^3.1.1"
   }

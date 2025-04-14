@@ -1,66 +1,65 @@
 import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
-import { integer, sqliteTable, text, primaryKey } from 'drizzle-orm/sqlite-core';
 import { eq } from 'drizzle-orm';
+import { companies, addresses, projects, persons, personProjects } from '../lab6/schema';
 
-// Define tables
-const companies = sqliteTable('company', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  name: text('name').notNull(),
-});
-
-const addresses = sqliteTable('address', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  city: text('city').notNull(),
-});
-
-const projects = sqliteTable('project', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  title: text('title').notNull(),
-});
-
-const persons = sqliteTable('person', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
-  name: text('name').notNull(),
-  companyId: integer('company_id').references(() => companies.id),
-  addressId: integer('address_id').references(() => addresses.id),
-});
-
-const personProjects = sqliteTable(
-  'person_project',
-  {
-    personId: integer('person_id')
-      .notNull()
-      .references(() => persons.id),
-    projectId: integer('project_id')
-      .notNull()
-      .references(() => projects.id),
-  },
-  (table) => ({
-    pk: primaryKey({ columns: [table.personId, table.projectId] }),
-  })
-);
-
-// Set up SQLite + Drizzle
-const sqlite = new Database('lab7.db');
+const sqlite = new Database('lab6.db');
 const db = drizzle(sqlite);
 
+sqlite.exec(`
+  CREATE TABLE IF NOT EXISTS person_project (
+    person_id INTEGER NOT NULL,
+    project_id INTEGER NOT NULL,
+    PRIMARY KEY (person_id, project_id),
+    FOREIGN KEY (person_id) REFERENCES person(id),
+    FOREIGN KEY (project_id) REFERENCES project(id)
+  );
+`);
+
 async function main() {
-  sqlite.exec(`PRAGMA foreign_keys = ON`);
+  console.log('🧪 Lab 7: Testing Relations (OneToOne, OneToMany, ManyToMany)');
 
-  console.log('📦 Inserting company, address, and projects...');
-  const [company] = await db.insert(companies).values({ name: 'SoftServe' }).returning();
-  const [address] = await db.insert(addresses).values({ city: 'Lviv' }).returning();
-  const [project1] = await db.insert(projects).values({ title: 'AI Research' }).returning();
-  const [project2] = await db.insert(projects).values({ title: 'Mobile App' }).returning();
+  const [address] = await db
+    .insert(addresses)
+    .values({
+      city: 'Odesa',
+      state: 'Odeska',
+    })
+    .returning();
 
-  console.log('👤 Inserting person with relations...');
+  const [company] = await db
+    .insert(companies)
+    .values({
+      name: 'GlobalSoft',
+      industry: 'Consulting',
+    })
+    .returning();
+
+  const [project1] = await db
+    .insert(projects)
+    .values({
+      title: 'Cloud System',
+      duration: 12,
+    })
+    .returning();
+  const [project2] = await db
+    .insert(projects)
+    .values({
+      title: 'Security Revamp',
+      duration: 9,
+    })
+    .returning();
+
   const [person] = await db
     .insert(persons)
     .values({
-      name: 'Ivan',
-      companyId: company.id,
+      name: 'Yulia',
+      isWorking: true,
+      timestamp: Date.now(),
+      friends: ['Oleh', 'Anna'],
       addressId: address.id,
+      companyId: company.id,
+      projectId: project1.id,
     })
     .returning();
 
@@ -69,19 +68,17 @@ async function main() {
     { personId: person.id, projectId: project2.id },
   ]);
 
-  console.log('📋 Fetching person with relations...');
-  const people = await db.select().from(persons).where(eq(persons.id, person.id));
-  console.log(people);
+  const links = await db.select().from(personProjects).where(eq(personProjects.personId, person.id));
+  console.log('📎 Person-project links:', links);
 
-  console.log('🧹 Cleaning up...');
   await db.delete(personProjects).where(eq(personProjects.personId, person.id));
   await db.delete(persons).where(eq(persons.id, person.id));
-  await db.delete(companies).where(eq(companies.id, company.id));
-  await db.delete(addresses).where(eq(addresses.id, address.id));
   await db.delete(projects).where(eq(projects.id, project1.id));
   await db.delete(projects).where(eq(projects.id, project2.id));
+  await db.delete(companies).where(eq(companies.id, company.id));
+  await db.delete(addresses).where(eq(addresses.id, address.id));
 
-  console.log('✅ Lab 7 complete.');
+  console.log('✅ Lab 7 complete');
 }
 
 main();
