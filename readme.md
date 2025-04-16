@@ -98,6 +98,18 @@ Set the lab number via the LAB environment variable. For example, to run Lab 6, 
 LAB=6 npm run run:lab
 ```
 
+### 4.3 Lab Command Reference
+
+| Lab       | Command                                                                         |
+| --------- | ------------------------------------------------------------------------------- |
+| Lab 1–5   | `npm run unit:lab X` (e.g. `npm run unit:lab 3`) — runs with Vitest             |
+| Lab 6–7   | `LAB=X npm run run:lab` (e.g. `LAB=6 npm run run:lab`) — runs via direct script |
+| Lab 8     | `npm run unit:lab 8` — runs unit tests with DataProvider                        |
+| Lab 9     | _Manual UI locators task – no runnable script_                                  |
+| Lab 10–14 | `npm run e2e:lab -- X` (e.g. `npm run e2e:lab -- 10`) — runs with Playwright    |
+| Lab 15–16 | `npm run e2e:lab -- 15` — API tests via Axios + Playwright                      |
+| Lab 19    | `npm run run:lab19` — special case with JMeter inside Docker                    |
+
 ### Running End-to-End (E2E) tests for a lab:
 
 Set the lab number via the LAB environment variable. For example, to run Lab 6, use:
