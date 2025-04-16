@@ -8,7 +8,7 @@ export default defineConfig({
   },
   reporter: [['list'], ['allure-playwright']],
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'https://demoqa.com',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'on',

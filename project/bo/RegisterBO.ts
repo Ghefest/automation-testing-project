@@ -8,15 +8,24 @@ export class RegisterBO {
     this.po = new RegisterPO(page);
   }
 
-  async registerUser(name: string, email: string, password: string) {
+  async registerUser(firstName: string, lastName: string, username: string, password: string) {
     await this.po.getPage().goto('/register');
-    await this.po.fillUsername(name);
-    await this.po.fillEmail(email);
+
+    await this.po.fillFirstName(firstName);
+    await this.po.fillLastName(lastName);
+    await this.po.fillUsername(username);
     await this.po.fillPassword(password);
+
+    const page = this.po.getPage();
+    const recaptchaFrame = page.frameLocator('iframe[title="reCAPTCHA"]');
+    await recaptchaFrame.locator('#recaptcha-anchor').click();
+
+    await page.waitForTimeout(2000);
+
     await this.po.submit();
   }
 
   async assertSuccessfulRegistration(expectedUrl: string) {
-    await expect(this.po['page']).toHaveURL(expectedUrl);
+    await expect(this.po.getPage()).toHaveURL(expectedUrl);
   }
 }

@@ -36,7 +36,7 @@ export class TableBO {
   }
 
   async verifyUserVisible() {
-    await this.table.getUserRow().waitFor({ state: 'visible' });
+    await this.table.getUserRow().first().waitFor({ state: 'visible' });
     return this;
   }
 }

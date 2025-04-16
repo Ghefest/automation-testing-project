@@ -2,7 +2,7 @@ export const users = {
   validLogins: [
     {
       username: 'testuser1',
-      password: 'password1',
+      password: 'password1A.!',
       redirectUrl: 'https://demoqa.com/profile',
     },
     {
