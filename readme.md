@@ -2,12 +2,54 @@
 
 This project is a migration from Java-based automation testing to a modern TypeScript-based ecosystem using Playwright for end-to-end (E2E) tests, Vitest for unit tests, and Allure for reporting. It follows a similar architecture found in Java projects (TC → BO → PO) to ease understanding for those familiar with Java.
 
-## 1. Prerequisites
+## 1. Prerequisites: Installing Node.js and npm
 
-- **Node.js:** Version 18 or higher is recommended.
-- **npm:** (or yarn) for package management.
-- **Bash:** Used for running shell scripts on Unix-like systems (or a Bash emulator on Windows).
-- (Optional) **Docker:** To run the project in a containerized environment.
+To run this project, you need to have **Node.js (v18+)** and **npm** installed.
+
+We recommend using **Node Version Manager (nvm)**, which makes it easy to install and switch between Node.js versions.
+
+### 1.1 Installing nvm
+
+#### On macOS / Linux:
+
+1. Open Terminal.
+2. Run the installation script:
+   ```bash
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+   ```
+3. After installation, close and reopen your terminal, then verify installation:
+   ```bash
+   command -v nvm
+   ```
+
+#### On Windows:
+
+Use **nvm for Windows**:
+
+1. Go to [https://github.com/coreybutler/nvm-windows/releases](https://github.com/coreybutler/nvm-windows/releases)
+2. Download and install the latest `nvm-setup.exe`.
+3. After installation, open a new Command Prompt or PowerShell window and verify:
+   ```cmd
+   nvm version
+   ```
+
+### 1.2 Installing Node.js and npm using nvm
+
+After installing nvm, use it to install Node.js:
+
+```bash
+nvm install 18
+nvm use 18
+```
+
+To verify installation:
+
+```bash
+node -v
+npm -v
+```
+
+This ensures you have both Node.js and npm set up correctly.
 
 ## 2. Installing Dependencies
 
